@@ -2,7 +2,7 @@
 import argparse
 import io
 
-import fitz
+import pymupdf
 from PIL import Image, ImageChops
 
 
@@ -24,28 +24,28 @@ DIVIDER_WIDTH = 0.5 * 72    # 36 points
 # --------------------------------------------------
 
 FIELDS = {
-    "upper-left": fitz.Rect(
+    "upper-left": pymupdf.Rect(
         MARGIN,
         MARGIN,
         MARGIN + FIELD_WIDTH,
         MARGIN + FIELD_HEIGHT,
     ),
 
-    "upper-right": fitz.Rect(
+    "upper-right": pymupdf.Rect(
         MARGIN + FIELD_WIDTH + DIVIDER_WIDTH,
         MARGIN,
         MARGIN + FIELD_WIDTH + DIVIDER_WIDTH + FIELD_WIDTH,
         MARGIN + FIELD_HEIGHT,
     ),
 
-    "lower-left": fitz.Rect(
+    "lower-left": pymupdf.Rect(
         MARGIN,
         MARGIN + FIELD_HEIGHT,
         MARGIN + FIELD_WIDTH,
         MARGIN + FIELD_HEIGHT + FIELD_HEIGHT,
     ),
 
-    "lower-right": fitz.Rect(
+    "lower-right": pymupdf.Rect(
         MARGIN + FIELD_WIDTH + DIVIDER_WIDTH,
         MARGIN + FIELD_HEIGHT,
         MARGIN + FIELD_WIDTH + DIVIDER_WIDTH + FIELD_WIDTH,
@@ -89,7 +89,7 @@ args = parser.parse_args()
 # Open and render the source PDF
 # --------------------------------------------------
 
-source = fitz.open(args.input_pdf)
+source = pymupdf.open(args.input_pdf)
 
 if len(source) == 0:
     source.close()
@@ -99,7 +99,7 @@ source_page = source[0]
 
 # Render at 2x resolution for better image quality
 pix = source_page.get_pixmap(
-    matrix=fitz.Matrix(2, 2),
+    matrix=pymupdf.Matrix(2, 2),
     alpha=False,
 )
 
@@ -157,7 +157,7 @@ image_buffer.seek(0)
 # Create the new PDF
 # --------------------------------------------------
 
-output = fitz.open()
+output = pymupdf.open()
 
 page = output.new_page(
     width=PAGE_WIDTH,
@@ -200,7 +200,7 @@ y = field_rect.y0 + (
     field_height - display_height
 ) / 2
 
-image_rect = fitz.Rect(
+image_rect = pymupdf.Rect(
     x,
     y,
     x + display_width,

@@ -52,6 +52,10 @@ FIELDS = {
         MARGIN + FIELD_HEIGHT + FIELD_HEIGHT,
     ),
 }
+FIELDS["ul"] = FIELDS['upper-left']
+FIELDS["ur"] = FIELDS['upper-right']
+FIELDS["ll"] = FIELDS['lower-left']
+FIELDS["lr"] = FIELDS['lower-right']
 
 
 # --------------------------------------------------
